@@ -41,9 +41,20 @@ public class FCMPluginActivity extends Activity {
 		
 		FCMPlugin.sendPushPayload(data);
 
+        if(data.get("isurl").equals("true")){
+            String url = data.get("url").toString();
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        } else {
+            PackageManager pm = getPackageManager();
+            Intent launchIntent = pm.getLaunchIntentForPackage(getApplicationContext().getPackageName());
+            startActivity(launchIntent);
+        }
+
         finish();
 
-        forceMainActivityReload();
+        //forceMainActivityReload();
     }
 
     private void forceMainActivityReload() {
